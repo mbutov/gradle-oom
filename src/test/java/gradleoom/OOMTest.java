@@ -1,34 +1,22 @@
 package gradleoom;
 
-import java.util.Arrays;
-
-import org.junit.*;
-import org.slf4j.*;
-
+import org.junit.Test;
 
 /**
  * @author Maxim Butov
  */
 public class OOMTest {
 
-    private Logger logger = LoggerFactory.getLogger(OOMTest.class);
-
     @Test
-    public void testOutOfMemory() {
+    public void testOutOfMemory() throws Throwable {
 
-        logger.info("Preparing large string");
+        System.out.println("Generating many lines of output");
 
-        String largeString;
-        {
-            char[] chars = new char[10 * 1024 * 1024]; // ten mega-chars
-            Arrays.fill(chars, 'x');
-            largeString = new String(chars);
-        }
+        // 1M iterations is enough for Gradle (-Xmx128m), 1G - for Idea (-Xmx4096m)
+        for (int totalEols = 0; totalEols < 1000 * 1000; totalEols++) {
 
-        logger.info("Large string ready");
+            System.out.println();
 
-        for (int k = 0; k < 1024 * 1024; k++) {
-            logger.info("Iteration {}: large string is {}", k, largeString);
         }
 
     }
